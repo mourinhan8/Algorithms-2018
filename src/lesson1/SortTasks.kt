@@ -43,7 +43,7 @@ fun toString(s: Int): String {
 }
 
 fun sortTimes(inputName: String, outputName: String) {
-    val res = File(outputName).bufferedWriter()
+    val ressult = File(outputName).bufferedWriter()
     val file = File(inputName).readLines()
     val list = mutableListOf<Int>()
     val listStr = mutableListOf<String>()
@@ -59,11 +59,11 @@ fun sortTimes(inputName: String, outputName: String) {
     }
     for (i in 0 until listStr.size) {
         if (i != listStr.size) {
-            res.write(listStr[i])
-            res.newLine()
+            result.write(listStr[i])
+            result.newLine()
         }
-        res.write(listStr[i])
-        res.close()
+        result.write(listStr[i])
+        result.close()
     }
 }
 
