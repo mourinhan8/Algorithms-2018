@@ -30,8 +30,41 @@ package lesson1
  *
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
+fun toSecond(str: String): Int {
+    val sub = str.split(":")
+    return sub[0].toInt() * 3600 + sub[1].toInt() * 60 + sub[2].toInt()
+}
+
+fun toString(s: Int): String {
+    val h: Int = s / 3600
+    val m: Int = (s - h * 3600) / 60
+    val s: Int = s - h * 3600 - m * 60
+    return h.toString() + ":" + m.toString() + ":" + s.toString()
+}
+
 fun sortTimes(inputName: String, outputName: String) {
-    TODO()
+    val res = File(outputName).bufferedWriter()
+    val file = File(inputName).readLines()
+    val list = mutableListOf<Int>()
+    val listStr = mutableListOf<String>()
+    for (line in file) {
+        val s = toSecond(line)
+        list.add(s)
+    }
+    val m: IntArray = list.toIntArray()
+    quickSort(m)
+    for (i in m.indices) {
+        val str = toString(m[i])
+        listStr.add(str)
+    }
+    for (i in 0 until listStr.size) {
+        if (i != listStr.size) {
+            res.write(listStr[i])
+            res.newLine()
+        }
+        res.write(listStr[i])
+        res.close()
+    }
 }
 
 /**
