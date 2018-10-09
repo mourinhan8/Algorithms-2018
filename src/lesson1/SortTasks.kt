@@ -47,9 +47,13 @@ fun sortTimes(inputName: String, outputName: String) {
     val file = File(inputName).readLines()
     val list = mutableListOf<Int>()
     val listStr = mutableListOf<String>()
-    for (line in file) {
-        val s = toSecond(line)
-        list.add(s)
+    try {
+        for (line in file) {
+            val s = toSecond(line)
+            list.add(s)
+        }
+    } catch (e: IOException) {
+        throw IllegalAccessException()
     }
     val m: IntArray = list.toIntArray()
     quickSort(m)
@@ -94,7 +98,42 @@ fun sortTimes(inputName: String, outputName: String) {
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
 fun sortAddresses(inputName: String, outputName: String) {
-    TODO()
+    val res = File(outputName).bufferedWriter()
+    val file = File(inputName).readLines()
+    val array = file.toTypedArray()
+    val s = array.sortedArray()
+    val address = mutableSetOf<String>()
+    val list = mutableListOf<List<String>>()
+    for (i in s.indices) {
+        val sub = array[i].split(" - ")
+        list.add(sub)
+        address.add(sub[1])
+    }
+    val arrayAddress = address.toTypedArray()
+    val sortedAddress = arrayAddress.sortedArray()
+    val listRes = mutableListOf<MutableList<String>>()
+    for (n in sortedAddress) {
+        val l = mutableListOf<String>()
+        l.add(n)
+        listRes.add(l)
+    }
+    for (i in sortedAddress.indices) {
+        for (j in list.indices) {
+            if (list[j][1] == sortedAddress[i]) {
+                listRes[i].add(list[j][0])
+            }
+        }
+    }
+    for (i in 0 until listRes.size) {
+        val str = StringBuilder()
+        str.append(listRes[0].toString() + " - ")
+        for (j in 1 until listRes[i].size) {
+            str.append(listRes[i][j])
+            if (j != listRes[i].size - 1) str.append(", ")
+        }
+        res.write(str.toString())
+        if (i != listRes.size - 1) res.newLine()
+    }
 }
 
 /**
@@ -128,8 +167,21 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 121.3
  */
 fun sortTemperatures(inputName: String, outputName: String) {
-    TODO()
+    val res = File(outputName).bufferedWriter()
+    val file = File(inputName).readLines()
+    val list = mutableListOf<Int>()
+    for (line in file) {
+        list.add((line.toDouble() * 10).toInt())
+    }
+    val m: IntArray = list.toIntArray()
+    quickSort(m)
+    for (i in m.indices) {
+        res.write((m[i].toDouble() / 10).toString())
+        if (i != m.size - 1) res.newLine()
+    }
+
 }
+
 
 /**
  * Сортировка последовательности
