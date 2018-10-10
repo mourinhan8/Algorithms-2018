@@ -106,6 +106,7 @@ fun sortAddresses(inputName: String, outputName: String) {
     val list = mutableListOf<List<String>>()
     for (i in s.indices) {
         val sub = array[i].split(" - ")
+        if (sub.size != 2) throw IllegalAccessException()
         list.add(sub)
         address.add(sub[1])
     }
@@ -126,7 +127,7 @@ fun sortAddresses(inputName: String, outputName: String) {
     }
     for (i in 0 until listRes.size) {
         val str = StringBuilder()
-        str.append(listRes[0].toString() + " - ")
+        str.append(listRes[i][0] + " - ")
         for (j in 1 until listRes[i].size) {
             str.append(listRes[i][j])
             if (j != listRes[i].size - 1) str.append(", ")
@@ -134,6 +135,7 @@ fun sortAddresses(inputName: String, outputName: String) {
         res.write(str.toString())
         if (i != listRes.size - 1) res.newLine()
     }
+    res.close()
 }
 
 /**
@@ -171,6 +173,7 @@ fun sortTemperatures(inputName: String, outputName: String) {
     val file = File(inputName).readLines()
     val list = mutableListOf<Int>()
     for (line in file) {
+        if (line.toDouble() <= -273.0 || line.toDouble() >= 500.0) throw IllegalAccessException()
         list.add((line.toDouble() * 10).toInt())
     }
     val m: IntArray = list.toIntArray()
@@ -179,7 +182,7 @@ fun sortTemperatures(inputName: String, outputName: String) {
         res.write((m[i].toDouble() / 10).toString())
         if (i != m.size - 1) res.newLine()
     }
-
+    res.close()
 }
 
 
