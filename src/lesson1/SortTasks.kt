@@ -39,16 +39,18 @@ fun toString(s: Int): String {
     val h: Int = s / 3600
     val m: Int = (s - h * 3600) / 60
     val s: Int = s - h * 3600 - m * 60
-    return h.toString() + ":" + m.toString() + ":" + s.toString()
+    return String.format("%02d:%02d:%02d", h, m, s)
 }
 
 fun sortTimes(inputName: String, outputName: String) {
-    val ressult = File(outputName).bufferedWriter()
+    val result = File(outputName).bufferedWriter()
     val file = File(inputName).readLines()
     val list = mutableListOf<Int>()
     val listStr = mutableListOf<String>()
+    val reg = Regex("(([01]\\d)|(2[0-4])):[0-5]\\d:[0-5]\\d")
     try {
         for (line in file) {
+            if (!(reg matches line)) throw Exception()
             val s = toSecond(line)
             list.add(s)
         }
@@ -62,13 +64,10 @@ fun sortTimes(inputName: String, outputName: String) {
         listStr.add(str)
     }
     for (i in 0 until listStr.size) {
-        if (i != listStr.size) {
-            result.write(listStr[i])
-            result.newLine()
-        }
         result.write(listStr[i])
-        result.close()
+        if (i != listStr.size - 1) result.newLine()
     }
+    result.close()
 }
 
 /**
