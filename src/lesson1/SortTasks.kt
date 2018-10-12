@@ -3,7 +3,8 @@
 package lesson1
 
 import java.io.File
-import java.io.IOException
+import java.util.*
+
 
 /**
  * Сортировка времён
@@ -33,42 +34,16 @@ import java.io.IOException
  *
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
-fun toSecond(str: String): Int {
-    val sub = str.split(":")
-    return sub[0].toInt() * 3600 + sub[1].toInt() * 60 + sub[2].toInt()
-}
-
-fun toString(s: Int): String {
-    val h: Int = s / 3600
-    val m: Int = (s - h * 3600) / 60
-    val s: Int = s - h * 3600 - m * 60
-    return String.format("%02d:%02d:%02d", h, m, s)
-}
-
 fun sortTimes(inputName: String, outputName: String) {
     val result = File(outputName).bufferedWriter()
-    val file = File(inputName).readLines()
-    val list = mutableListOf<Int>()
-    val listStr = mutableListOf<String>()
+    val file = File(inputName).readLines().toTypedArray()
     val reg = Regex("(([01]\\d)|(2[0-4])):[0-5]\\d:[0-5]\\d")
-    try {
-        for (line in file) {
-            if (!(reg matches line)) throw Exception()
-            val s = toSecond(line)
-            list.add(s)
-        }
-    } catch (e: IOException) {
-        throw IllegalAccessException()
+    for (line in file) {
+        if (!(reg matches line)) throw Exception()
     }
-    val m: IntArray = list.toIntArray()
-    quickSort(m)
-    for (i in m.indices) {
-        val str = toString(m[i])
-        listStr.add(str)
-    }
-    for (i in 0 until listStr.size) {
-        result.write(listStr[i])
-        if (i != listStr.size - 1) result.newLine()
+    insertionSort(file)
+    for (line in file) {
+        result.write(line + "\n")
     }
     result.close()
 }
@@ -101,28 +76,26 @@ fun sortTimes(inputName: String, outputName: String) {
  */
 fun sortAddresses(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
-    val file = File(inputName).readLines()
-    val array = file.toTypedArray()
-    val s = array.sortedArray()
+    val file = File(inputName).readLines().toTypedArray().sortedArray()
+    val reg = Regex("[А-Яа-я]+ [А-Яа-я]+ - [А-Яа-я]+ \\d+")
     val address = mutableSetOf<String>()
     val list = mutableListOf<List<String>>()
-    for (i in s.indices) {
-        val sub = array[i].split(" - ")
-        if (sub.size != 2) throw IllegalAccessException()
+    for (i in file.indices) {
+        if (!(reg matches file[i])) throw IllegalArgumentException()
+        val sub = file[i].split(" - ")
         list.add(sub)
         address.add(sub[1])
     }
-    val arrayAddress = address.toTypedArray()
-    val sortedAddress = arrayAddress.sortedArray()
+    val arrayAddress = address.toTypedArray().sortedArray()
     val listRes = mutableListOf<MutableList<String>>()
-    for (n in sortedAddress) {
+    for (n in arrayAddress) {
         val l = mutableListOf<String>()
         l.add(n)
         listRes.add(l)
     }
-    for (i in sortedAddress.indices) {
+    for (i in arrayAddress.indices) {
         for (j in list.indices) {
-            if (list[j][1] == sortedAddress[i]) {
+            if (list[j][1] == arrayAddress[i]) {
                 listRes[i].add(list[j][0])
             }
         }
@@ -134,8 +107,7 @@ fun sortAddresses(inputName: String, outputName: String) {
             str.append(listRes[i][j])
             if (j != listRes[i].size - 1) str.append(", ")
         }
-        res.write(str.toString())
-        if (i != listRes.size - 1) res.newLine()
+        res.write(str.toString() + "\n")
     }
     res.close()
 }
@@ -170,19 +142,19 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 99.5
  * 121.3
  */
+
 fun sortTemperatures(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
     val file = File(inputName).readLines()
-    val list = mutableListOf<Int>()
+    val list = ArrayList<Double>()
     for (line in file) {
-        if (line.toDouble() <= -273.0 || line.toDouble() >= 500.0) throw IllegalAccessException()
-        list.add((line.toDouble() * 10).toInt())
+        val temp = line.toDouble()
+        if (temp < -273.0 || temp > 500.0) throw IllegalArgumentException()
+        list.add(temp)
     }
-    val m: IntArray = list.toIntArray()
-    quickSort(m)
-    for (i in m.indices) {
-        res.write((m[i].toDouble() / 10).toString())
-        if (i != m.size - 1) res.newLine()
+    list.sort()
+    for (i in list.indices) {
+        res.write(list[i].toString() + "\n")
     }
     res.close()
 }
