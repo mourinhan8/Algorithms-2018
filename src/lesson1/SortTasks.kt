@@ -47,6 +47,8 @@ fun sortTimes(inputName: String, outputName: String) {
     }
     result.close()
 }
+//Трудоемкость алгоритма - O(N^2)
+//Ресурсоемкость - O(N)
 
 /**
  * Сортировка адресов
@@ -78,35 +80,23 @@ fun sortAddresses(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
     val file = File(inputName).readLines().toTypedArray().sortedArray()
     val reg = Regex("[А-Яа-я]+ [А-Яа-я]+ - [А-Яа-я]+ \\d+")
-    val address = mutableSetOf<String>()
-    val list = mutableListOf<List<String>>()
-    for (i in file.indices) {
-        if (!(reg matches file[i])) throw IllegalArgumentException()
-        val sub = file[i].split(" - ")
-        list.add(sub)
-        address.add(sub[1])
-    }
-    val arrayAddress = address.toTypedArray().sortedArray()
-    val listRes = mutableListOf<MutableList<String>>()
-    for (n in arrayAddress) {
-        val l = mutableListOf<String>()
-        l.add(n)
-        listRes.add(l)
-    }
-    for (i in arrayAddress.indices) {
-        for (j in list.indices) {
-            if (list[j][1] == arrayAddress[i]) {
-                listRes[i].add(list[j][0])
-            }
+    val map = sortedMapOf<String, TreeSet<String>>()
+    for (line in file) {
+        if (!(reg matches line)) throw IllegalArgumentException()
+        val sub = line.split(" - ").filter{ it != ""}
+        val add = sub[1]
+        val name = sub[0]
+        if (!map.containsKey(add)) {
+            val s = sortedSetOf(name)
+            map[add] = s
         }
+        else map.getValue(add).add(name)
     }
-    for (i in 0 until listRes.size) {
+    for (k in map) {
+        val v = k.value.toList()
         val str = StringBuilder()
-        str.append(listRes[i][0] + " - ")
-        for (j in 1 until listRes[i].size) {
-            str.append(listRes[i][j])
-            if (j != listRes[i].size - 1) str.append(", ")
-        }
+        val st = v.joinToString(", ")
+        str.append(k.key + " - " + st)
         res.write(str.toString() + "\n")
     }
     res.close()
@@ -158,7 +148,8 @@ fun sortTemperatures(inputName: String, outputName: String) {
     }
     res.close()
 }
-
+//Трудоемкость алгоритм - O(N logN)
+//Ресурсоемкость - O(N)
 
 /**
  * Сортировка последовательности
