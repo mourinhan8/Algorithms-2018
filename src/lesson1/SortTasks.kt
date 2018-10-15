@@ -83,14 +83,13 @@ fun sortAddresses(inputName: String, outputName: String) {
     val map = sortedMapOf<String, TreeSet<String>>()
     for (line in file) {
         if (!(reg matches line)) throw IllegalArgumentException()
-        val sub = line.split(" - ").filter{ it != ""}
+        val sub = line.split(" - ").filter { it != "" }
         val add = sub[1]
         val name = sub[0]
         if (!map.containsKey(add)) {
             val s = sortedSetOf(name)
             map[add] = s
-        }
-        else map.getValue(add).add(name)
+        } else map.getValue(add).add(name)
     }
     for (k in map) {
         val v = k.value.toList()
