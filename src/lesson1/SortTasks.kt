@@ -134,19 +134,20 @@ fun sortAddresses(inputName: String, outputName: String) {
 fun sortTemperatures(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
     val file = File(inputName).readLines()
-    val list = ArrayList<Double>()
+    val list = ArrayList<Int>()
     for (line in file) {
         val temp = line.toDouble()
         if (temp < -273.0 || temp > 500.0) throw IllegalArgumentException()
-        list.add(temp)
+        list.add((temp * 10).toInt())
     }
-    list.sort()
-    for (i in list.indices) {
-        res.write(list[i].toString() + "\n")
+    val arr = list.toIntArray()
+    quickSort(arr)
+    for (i in arr.indices) {
+        res.write((arr[i].toDouble() / 10).toString() + "\n")
     }
     res.close()
 }
-//Трудоемкость алгоритм - O(N logN)
+//Трудоемкость алгоритм - O(N)
 //Ресурсоемкость - O(N)
 
 /**
