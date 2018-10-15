@@ -94,10 +94,9 @@ fun sortAddresses(inputName: String, outputName: String) {
     }
     for (k in map) {
         val v = k.value.toList()
-        val str = StringBuilder()
         val st = v.joinToString(", ")
-        str.append(k.key + " - " + st)
-        res.write(str.toString() + "\n")
+        val s = k.key + " - " + st
+        res.write(s + "\n")
     }
     res.close()
 }
