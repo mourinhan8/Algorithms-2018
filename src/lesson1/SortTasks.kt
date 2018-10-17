@@ -130,6 +130,24 @@ fun sortAddresses(inputName: String, outputName: String) {
  * 99.5
  * 121.3
  */
+fun countingSort(arr: IntArray) {
+    val n = arr.size
+    val output = IntArray(n)
+    val count = IntArray(7731)
+    for (i in 0..7730)
+        count[i] = 0
+    for (i in 0 until n)
+        ++count[arr[i]]
+    for (i in 1..7730)
+        count[i] += count[i - 1]
+    for (i in n -1 downTo 0) {
+        output[count[arr[i]] - 1] = arr[i]
+        --count[arr[i]]
+    }
+    for (i in 0 until n) {
+        arr[i] = output[i]
+    }
+}
 
 fun sortTemperatures(inputName: String, outputName: String) {
     val res = File(outputName).bufferedWriter()
@@ -138,16 +156,16 @@ fun sortTemperatures(inputName: String, outputName: String) {
     for (line in file) {
         val temp = line.toDouble()
         if (temp < -273.0 || temp > 500.0) throw IllegalArgumentException()
-        list.add((temp * 10).toInt())
+        list.add((temp * 10).toInt() + 2730)
     }
     val arr = list.toIntArray()
-    quickSort(arr)
+    countingSort(arr)
     for (i in arr.indices) {
-        res.write((arr[i].toDouble() / 10).toString() + "\n")
+        res.write(((arr[i] - 2730).toDouble() / 10).toString() + "\n")
     }
     res.close()
 }
-//Трудоемкость алгоритм - O(N)
+//Трудоемкость алгоритм - O(N + k)
 //Ресурсоемкость - O(N)
 
 /**
