@@ -99,6 +99,8 @@ fun sortAddresses(inputName: String, outputName: String) {
     }
     res.close()
 }
+//Трудоемкость алгоритм - O(N log(N))
+//Ресурсоемкость - O(N)
 
 /**
  * Сортировка температур
