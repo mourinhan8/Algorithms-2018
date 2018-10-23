@@ -56,7 +56,7 @@ fun optimizeBuyAndSell(inputName: String): Pair<Int, Int> {
     }
     return pair
 }
-//Трудоемкость алгоритм - O(N)
+//Трудоемкость алгоритм - O(N^2)
 //Ресурсоемкость - O(N)
 
 /**
