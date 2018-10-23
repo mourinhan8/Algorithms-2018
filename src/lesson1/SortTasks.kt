@@ -134,13 +134,14 @@ fun sortAddresses(inputName: String, outputName: String) {
  */
 fun countingSort(arr: IntArray) {
     val n = arr.size
+    val max = arr.max()
     val output = IntArray(n)
-    val count = IntArray(7731)
-    for (i in 0..7730)
+    val count = IntArray(max!! + 1)
+    for (i in 0..max)
         count[i] = 0
     for (i in 0 until n)
         ++count[arr[i]]
-    for (i in 1..7730)
+    for (i in 1..max)
         count[i] += count[i - 1]
     for (i in n -1 downTo 0) {
         output[count[arr[i]] - 1] = arr[i]
@@ -167,7 +168,7 @@ fun sortTemperatures(inputName: String, outputName: String) {
     }
     res.close()
 }
-//Трудоемкость алгоритм - O(N + k)
+//Трудоемкость алгоритм - O(N + k) - k = 7730 (размер массива count в функции countingSort)
 //Ресурсоемкость - O(N)
 
 /**
