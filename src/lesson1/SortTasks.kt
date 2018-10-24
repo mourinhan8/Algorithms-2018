@@ -37,7 +37,6 @@ import java.util.*
 fun sortTimes(inputName: String, outputName: String) {
     val result = File(outputName).bufferedWriter()
     val file = File(inputName).readLines().toTypedArray()
-
     val reg = Regex("(([01]\\d)|(2[0-4])):[0-5]\\d:[0-5]\\d")
     for (line in file) {
         if (!(reg matches line)) throw Exception()
@@ -144,7 +143,7 @@ fun countingSort(arr: IntArray) {
         ++count[arr[i]]
     for (i in 1..max)
         count[i] += count[i - 1]
-    for (i in n -1 downTo 0) {
+    for (i in n - 1 downTo 0) {
         output[count[arr[i]] - 1] = arr[i]
         --count[arr[i]]
     }
