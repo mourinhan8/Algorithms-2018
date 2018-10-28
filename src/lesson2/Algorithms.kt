@@ -2,7 +2,6 @@
 
 package lesson2
 
-import java.io.File
 import kotlin.math.sqrt
 
 /**
@@ -148,7 +147,7 @@ fun calcPrimesNumber(limit: Int): Int {
     for (i in 0..limit) arr[i] = 1
     arr[0] = 0
     arr[1] = 0
-    for (i in 2..Math.sqrt(limit.toDouble()).toInt()) {
+    for (i in 2..sqrt(limit.toDouble()).toInt()) {
         if (arr[i] == 1)
             for (j in 2..(limit / i)) arr[i * j] = 0
     }
