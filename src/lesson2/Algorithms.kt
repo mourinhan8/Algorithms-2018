@@ -30,35 +30,8 @@ import kotlin.math.sqrt
  * В случае обнаружения неверного формата файла бросить любое исключение.
  */
 fun optimizeBuyAndSell(inputName: String): Pair<Int, Int> {
-    val file = File(inputName).readLines()
-    val list = mutableListOf<Int>()
-    val reg = Regex("\\d+")
-    for (line in file) {
-        if (!(reg matches line)) throw IllegalArgumentException()
-        list.add(line.toInt())
-    }
-    val sub1 = mutableListOf(list[0])
-    val sub2 = list.subList(1, list.size)
-    var pair = Pair(0, 0)
-    var rate = 0
-    var m1 = sub1.min()
-    var m2 = sub2.max()
-    while (!sub2.isEmpty()) {
-        if (m2!! - m1!! > rate) {
-            rate = m2 - m1
-            pair = Pair(sub1.indexOf(m1) + 1, sub2.indexOf(m2) + sub1.size + 1)
-        }
-        sub1.add(sub2[0])
-        sub2.removeAt(0)
-        val t = sub1[sub1.size - 1]
-        if (t < m1) m1 = t
-        if (m2 == t && !sub2.isEmpty())
-            m2 = sub2.max()
-    }
-    return pair
+    TODO()
 }
-//Трудоемкость алгоритм - O(N^2)
-//Ресурсоемкость - O(N)
 
 /**
  * Задача Иосифа Флафия.
