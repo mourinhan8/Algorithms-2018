@@ -129,6 +129,28 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
+        try {
+            sortTemperatures("input/temp_in2.txt", "temp.txt")
+            throw IllegalArgumentException()
+        } catch (e: IllegalArgumentException) {
+        }
+
+        try {
+            sortTemperatures("input/temp_in3.txt", "temp.txt")
+            assertFileContent("temp.txt",
+                    """
+                    100.0
+                    100.0
+                    100.0
+                    100.0
+                    100.0
+                    100.0
+                    100.0
+                """.trimIndent())
+        } finally {
+            File("temp.txt").delete()
+        }
+
         fun testGeneratedTemperatures(size: Int) {
             try {
                 generateTemperatures(size)

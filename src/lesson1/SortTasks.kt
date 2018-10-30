@@ -168,7 +168,7 @@ fun sortTemperatures(inputName: String, outputName: String) {
     }
     res.close()
 }
-//Трудоемкость алгоритм - O(N + k) - k = 7730 (размер массива count в функции countingSort)
+//Трудоемкость алгоритм - O(N + k) - k : размер массива count в функции countingSort
 //Ресурсоемкость - O(N)
 
 /**
