@@ -2,6 +2,7 @@
 
 package lesson2
 
+import java.io.File
 import kotlin.math.sqrt
 
 /**
@@ -184,6 +185,53 @@ fun calcPrimesNumber(limit: Int): Int {
  * В файле буквы разделены пробелами, строки -- переносами строк.
  * Остальные символы ни в файле, ни в словах не допускаются.
  */
+
+val list = mutableListOf<List<Char>>()
+
 fun baldaSearcher(inputName: String, words: Set<String>): Set<String> {
-    TODO()
+    val file = File(inputName).readLines()
+    for (line in file) {
+        val sub = line.split(" ").filter { it != "" }.map { it[0] }
+        list.add(sub)
+    }
+    val setRes = mutableSetOf<String>()
+    val map = mutableMapOf<Char, MutableList<Pair<Int, Int>>>()
+    for (i in 0 until list.size) {
+        for (j in 0 until list[i].size) {
+            val key = list[i][j]
+            if (!map.containsKey(list[i][j])) {
+                val s = mutableListOf(Pair(j, i))
+                map[key] = s
+            } else map.getValue(key).add(Pair(j, i))
+        }
+    }
+    for (word in words) {
+        val ch = word[0]
+        if (map.containsKey(ch)) {
+            for (i in map.getValue(ch)) {
+                if (checkWord(i.first, i.second, word[1], word.substring(2))) {
+                    setRes.add(word)
+                    break
+                }
+            }
+        }
+    }
+    return setRes
 }
+
+fun checkWord(x: Int, y: Int, c: Char, str: String): Boolean {
+    val listMove = listOf(-1 to 0, 0 to -1, 1 to 0, 0 to 1)
+    for (i in listMove) {
+        val k = x + i.first
+        val l = y + i.second
+        if (k >= 0 && l >= 0 && k < list[0].size && l < list.size) {
+            if (list[l][k] == c) {
+                if (str.isEmpty()) return true
+                if (checkWord(k, l, str[0], str.substring(1))) return true
+            }
+        }
+    }
+    return false
+}
+//Трудоемкость алгоритм - O(m * n) - m: размер списка list, n: размер подсписка в списка list
+//Ресурсоемкость - O(m * n) - m: размер списка list, n: размер подсписка в списка list
