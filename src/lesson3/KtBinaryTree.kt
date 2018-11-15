@@ -1,6 +1,6 @@
 package lesson3
 
-import java.util.SortedSet
+import java.util.*
 import kotlin.NoSuchElementException
 
 // Attention: comparable supported but comparator is not
@@ -55,7 +55,82 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
      * Средняя
      */
     override fun remove(element: T): Boolean {
-        TODO()
+        val node = find(element)
+        if (node == null || node.value != element)
+            return false
+        val right = node.right
+        val left = node.left
+        val parent = findParent(root!!, element)
+        if (node == root) {
+            if (right == null && left == null) root = null
+            else if (right == null) {
+                root = left
+            } else if (left == null) {
+                root = right
+            } else {
+                val temp = swapNode(left, right)
+                root = temp
+            }
+        } else {
+            val v = parent!!.value
+            val a = element > v
+            val b = element < v
+            if (right == null && left == null) {
+                if (a) parent.right = null
+                if (b) parent.left = null
+            } else if (right == null) {
+                if (a) parent.right = left
+                if (b) parent.left = left
+            } else if (left == null) {
+                if (a) parent.right = right
+                if (b) parent.left = right
+            } else {
+                val temp = swapNode(left, right)
+                if (a) parent.right = temp
+                if (b) parent.left = temp
+            }
+        }
+        size--
+        return true
+    }
+
+    private fun swapNode(nLeft: Node<T>, nRight: Node<T>): Node<T> {
+        val min = minimumElement(nRight)
+        val temp = Node(min)
+        val minNode = find(min)
+        temp.left = nLeft
+        if (minNode == nRight) {
+            temp.right = minNode.right
+        } else {
+            val rightOfMinNode = minNode!!.right
+            val parentOfMinNode = findParent(root!!, min)
+            parentOfMinNode!!.left = rightOfMinNode
+            temp.right = nRight
+        }
+        return temp
+    }
+
+    //искать наименьшее значение, который больше значения node
+    private fun minimumElement(node: Node<T>): T {
+        if (node.left == null) return node.value
+        else return (minimumElement(node.left!!))
+    }
+
+    private fun findParent(node: Node<T>, v: T): Node<T>? {
+        if (root!!.value == v) return null
+        val left = node.left
+        val right = node.right
+        if (left == null && right != null) {
+            if (right.value == v) return node
+        }
+        if (right == null && left != null)
+            if (left.value == v) return node
+        if (left != null && right != null)
+            if (left.value == v || right.value == v) {
+                return node
+            }
+        if (v < node.value) return findParent(node.left!!, v)
+        else return findParent(node.right!!, v)
     }
 
     override operator fun contains(element: T): Boolean {
@@ -78,16 +153,34 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
     inner class BinaryTreeIterator : MutableIterator<T> {
 
         private var current: Node<T>? = null
+        private var stack = Stack<Node<T>>()
+
+        init {
+            pushAll(root!!)
+        }
 
         /**
          * Поиск следующего элемента
          * Средняя
          */
         private fun findNext(): Node<T>? {
-            TODO()
+            val temp = stack.pop()
+            if (temp.right != null) {
+                pushAll(temp.right!!)
+            }
+            return temp
         }
 
-        override fun hasNext(): Boolean = findNext() != null
+        private fun pushAll(node: Node<T>) {
+            val s = stack
+            if (node != null) {
+                stack.push(node)
+                if (node.left != null)
+                    pushAll(node.left!!)
+            }
+        }
+
+        override fun hasNext(): Boolean = !stack.isEmpty()
 
         override fun next(): T {
             current = findNext()
