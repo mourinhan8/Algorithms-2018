@@ -110,7 +110,7 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
         return temp
     }
 
-    //искать наименьшее значение, который больше значения node
+    //поиск наименьшее значение, который больше значения node
     private fun minimumElement(node: Node<T>): T {
         if (node.left == null) return node.value
         else return (minimumElement(node.left!!))
@@ -120,15 +120,15 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
         if (root!!.value == v) return null
         val left = node.left
         val right = node.right
-        if (left == null && right != null) {
-            if (right.value == v) return node
-        }
-        if (right == null && left != null)
-            if (left.value == v) return node
         if (left != null && right != null)
             if (left.value == v || right.value == v) {
                 return node
             }
+        if (right == null && left != null)
+            if (left.value == v) return node
+        if (left == null && right != null) {
+            if (right.value == v) return node
+        }
         if (v < node.value) return findParent(node.left!!, v)
         else return findParent(node.right!!, v)
     }
@@ -172,7 +172,6 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
         }
 
         private fun pushAll(node: Node<T>) {
-            val s = stack
             if (node != null) {
                 stack.push(node)
                 if (node.left != null)
@@ -192,7 +191,8 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
          * Сложная
          */
         override fun remove() {
-            TODO()
+            if (current != null) remove(current!!.value)
+            else throw NoSuchElementException()
         }
     }
 
