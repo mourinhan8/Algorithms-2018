@@ -93,6 +93,8 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
         size--
         return true
     }
+    //Трудоемкость алгоритм - O(N logN) - N : количество node в дереве
+    //Ресурсоемкость - O(1)
 
     private fun swapNode(nLeft: Node<T>, nRight: Node<T>): Node<T> {
         val min = minimumElement(nRight)
@@ -170,6 +172,8 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
             }
             return temp
         }
+        //Трудоемкость алгоритм - O(1)
+        //Ресурсоемкость - O(N)
 
         private fun pushAll(node: Node<T>) {
             if (node != null) {
@@ -194,6 +198,8 @@ class KtBinaryTree<T : Comparable<T>> : AbstractMutableSet<T>(), CheckableSorted
             if (current != null) remove(current!!.value)
             else throw NoSuchElementException()
         }
+        //Трудоемкость алгоритм - O(N logN)
+        //Ресурсоемкость - O(N)
     }
 
     override fun iterator(): MutableIterator<T> = BinaryTreeIterator()
