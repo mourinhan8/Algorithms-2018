@@ -13,6 +13,8 @@ abstract class AbstractDynamicTests {
                 "oiweijgw kejrhwejelkrw kjhdkfjs hrk",
                 "perhkhk lerkerorwetp lkjklvvd durltr"
         ))
+        assertEquals("ma ua", longestCommonSubSequence("emancom chua", "duma tuimay"))
+        assertEquals("uhong", longestCommonSubSequence("vui khong", "an cuchong"))
         assertEquals(""" дд саы чтых,
 евшнео ваа се сви дн.
         """.trimIndent(), longestCommonSubSequence(
@@ -50,6 +52,9 @@ abstract class AbstractDynamicTests {
         assertEquals(1, shortestPathOnField("input/field_in2.txt"))
         assertEquals(12, shortestPathOnField("input/field_in1.txt"))
         assertEquals(43, shortestPathOnField("input/field_in3.txt"))
+        assertEquals(31, shortestPathOnField("input/field_in4.txt"))
+        assertEquals(40, shortestPathOnField("input/field_in5.txt"))
+        assertEquals(0, shortestPathOnField("input/field_in6.txt"))
     }
 
 }

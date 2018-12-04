@@ -185,7 +185,6 @@ fun calcPrimesNumber(limit: Int): Int {
  * В файле буквы разделены пробелами, строки -- переносами строк.
  * Остальные символы ни в файле, ни в словах не допускаются.
  */
-
 val list = mutableListOf<List<Char>>()
 
 fun baldaSearcher(inputName: String, words: Set<String>): Set<String> {
